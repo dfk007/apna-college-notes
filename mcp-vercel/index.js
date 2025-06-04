@@ -31,6 +31,32 @@ app.post('/push-and-deploy', async (req, res) => {
   }
 });
 
+// Serve OpenAPI spec for Cursor auto-discovery
+app.get('/openapi.json', (req, res) => {
+  res.json({
+    openapi: "3.0.0",
+    info: {
+      title: "MCP Vercel Server",
+      version: "1.0.0"
+    },
+    paths: {
+      "/push-and-deploy": {
+        post: {
+          summary: "Push code to GitHub and deploy to Vercel",
+          responses: {
+            200: {
+              description: "Push and deploy successful"
+            },
+            500: {
+              description: "Push or deploy failed"
+            }
+          }
+        }
+      }
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`MCP server running on http://localhost:${PORT}`);
 }); 
